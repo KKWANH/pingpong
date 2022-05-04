@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+	<!-- <link rel="stylesheet" href="style.css" /> -->
+	<style>
+		#pong {
+
+			border: 2px solid #FFF;
+			position: absolute;
+			margin: auto;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+		}
+
+		body {
+			font-family: Avenir, Helvetica, Arial, sans-serif;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			font-size: 14px;
+			background-color: dimgray;
+			text-align: center;
+		}
+
+		#reset {
+			position: absolute;
+			margin: auto;
+			margin-left: -4.3%;
+			margin-top: 100px;
+			box-shadow: rgb(66, 66, 66) 5px 5px 5px;
+			width: 150px;
+			height: 40px;
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		#keyup {
+			position: absolute;
+			margin: auto;
+			margin-left: -14.3%;
+			margin-top: 100px;
+			box-shadow: rgb(66, 66, 66) 5px 5px 5px;
+			width: 150px;
+			height: 40px;
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		#keydown {
+			position: absolute;
+			margin: auto;
+			margin-left: 5.7%;
+			margin-top: 100px;
+			box-shadow: rgb(66, 66, 66) 5px 5px 5px;
+			width: 150px;
+			height: 40px;
+			font-size: 20px;
+			font-weight: bold;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Vite App</title>
+</head>
+
+<body>
+	<button id="keyup">Up</button>
+	<button id="reset">Give Up</button>
+	<button id="keydown">Down</button>
+	<canvas id="pong" width="600" height="400"></canvas>
+	<script type="module" src="/srcs/canvas.tsx"></script>
+</body>
+
+</html>

@@ -3,6 +3,14 @@ import { styled } from "@stitches/react";
 import ReactDOM from "react-dom";
 import { convert } from "html-element-to-react";
 
+// setting definition
+let gameStatus = "playing";
+let muteStatus = true;
+
+const resetButton = document.getElementById("reset");
+const muteButton = document.getElementById("mute");
+// setting definition end
+
 // sound definition
 const hit = new Audio();
 const wall = new Audio();
@@ -17,12 +25,24 @@ goal.src = "sounds/goal.mp3";
 win.src = "sounds/win.mp3";
 fail.src = "sounds/fail.mp3";
 countdown.src = "sounds/countdown.mp3";
+
+function musicPlay(argMusic) {
+  if (muteStatus === true) argMusic.play();
+}
+
+function soundToggle() {
+  muteStatus = !muteStatus;
+  if (muteStatus === false) {
+  	muteButton.textContent = "Unmute";
+  } else {
+    muteButton.textContent = "Mute";
+  }
+}
 // sound end
 
 // const canvas definition
 const canvas = document.getElementById("pong") as HTMLCanvasElement;
 const contxt = canvas.getContext("2d");
-const reset = document.getElementById("reset");
 // const canvas definition end
 
 // const element definition
@@ -61,8 +81,6 @@ const net = {
   width: 2,
   color: "#FFF"
 };
-
-let status = "playing";
 // const element definition end
 
 // calculator functions
@@ -90,25 +108,25 @@ function resetBall() {
 
 // updater function
 function update() {
-  if (status === "playing") {
+  if (gameStatus === "playing") {
     // change the score of players,
     // if the ball goes to the left "ball.x<0" computer win,
     // else if "ball.x > canvas.width" the user win
     if (ball.x - ball.radius < 0) {
       com.score += 1;
       resetBall();
-	  goal.play();
+	  musicPlay(goal);
     } else if (ball.x + ball.radius > canvas.width) {
       user.score += 1;
       resetBall();
-	  goal.play();
+	  musicPlay(goal);
     }
     if (user.score === 5) {
-      status = "user";
-      win.play();
+	  gameStatus = "user";
+      musicPlay(win);
     } else if (com.score === 5) {
-      status = "com";
-      fail.play();
+      gameStatus = "com";
+      musicPlay(fail);
     } else {
    	  // the ball has a velocity
       ball.x += ball.velocityX;
@@ -123,7 +141,7 @@ function update() {
       // we inverse the y velocity.
       if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
         ball.velocityY = -ball.velocityY;
-	  	wall.play();
+        musicPlay(wall);
       }
 
       // we check if the paddle hit the user or the com paddle
@@ -132,7 +150,7 @@ function update() {
 
       // if the ball hits a paddle
       if (collision(ball, player)) {
-	  	hit.play();
+        musicPlay(hit);
         // we check where the ball hits the paddle
         let collidePoint = (ball.y - (player.y + player.height / 2));
 
@@ -192,9 +210,9 @@ function render() {
   drawNet();
   drawRect(user.x, user.y, user.width, user.height, user.color);
   drawRect(com.x, com.y, com.width, com.height, com.color);
-  if (status === "user") {
+  if (gameStatus === "user") {
     drawText("You Win!", (canvas.width / 5), (canvas.height / 1.8), 100, "#12A0F9");
-  } else if (status === "com") {
+  } else if (gameStatus === "com") {
     drawText("You Die!", (canvas.width / 5), (canvas.height / 1.8), 100, "#FE3F3F");
   } else {
     drawText(user.score, canvas.width / 4, canvas.height / 5, 75, "#FFF");
@@ -206,24 +224,35 @@ function render() {
 
 // game control buttons
 function resetGame() {
-  status = "com";
-  countdown.play();
-  setTimeout(() => { status = "playing"; resetBall(); user.score = 0; com.score = 0; }, 3000);
+  gameStatus = "com";
+  musicPlay(countdown);
+  setTimeout(() => { gameStatus = "playing"; resetBall(); user.score = 0; com.score = 0; }, 3000);
 }
 // game control buttons end
 
-// main parts
-canvas.addEventListener("mousemove", getMousePos);
-reset.addEventListener("click", resetGame);
+// mouse and key
+function controlByKey(evt) {
+  if (evt.key === "m" || evt.key === "M") {
+    soundToggle();
+  } else if (evt.key === "ArrowUp") {
+  } else if (evt.key === "ArrowDown") {
+  }
+}
 
-function getMousePos(evt) {
+function controlByMouse(evt) {
   const rect = canvas.getBoundingClientRect();
   user.y = evt.clientY - rect.top - user.height / 2;
 }
+// mouse and key end
 
-const framePerSecond = 50;
-const loop = setInterval(Game, 1000 / framePerSecond);
+// event listeners
+canvas.addEventListener("mousemove", controlByMouse);
+document.addEventListener("keydown", controlByKey);
+resetButton.addEventListener("click", resetGame);
+muteButton.addEventListener("click", soundToggle);
+// event listeners end
 
+// main parts
 function Game() {
   update();
   render();
@@ -233,3 +262,8 @@ function Game() {
 const App = convert(Game());
 ReactDOM.render(App, document.getElementById("pong"));
 // main parts end
+
+// loop
+const framePerSecond = 50;
+const loop = setInterval(Game, 1000 / framePerSecond);
+// loop end

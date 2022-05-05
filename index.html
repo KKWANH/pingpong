@@ -7,7 +7,6 @@
 	<!-- <link rel="stylesheet" href="style.css" /> -->
 	<style>
 		#pong {
-
 			border: 2px solid #FFF;
 			position: absolute;
 			margin: auto;
@@ -26,35 +25,19 @@
 			text-align: center;
 		}
 
-		#reset {
-			position: absolute;
-			margin: auto;
-			margin-left: -4.3%;
-			margin-top: 100px;
-			box-shadow: rgb(66, 66, 66) 5px 5px 5px;
-			width: 150px;
-			height: 40px;
-			font-size: 20px;
-			font-weight: bold;
+		#settingBox {
+			width: 20%;
+			margin-left: 40%;
+			margin-top: 30%;
 		}
 
-		#keyup {
-			position: absolute;
-			margin: auto;
-			margin-left: -14.3%;
-			margin-top: 100px;
-			box-shadow: rgb(66, 66, 66) 5px 5px 5px;
-			width: 150px;
-			height: 40px;
-			font-size: 20px;
-			font-weight: bold;
-		}
+		#reset {}
 
-		#keydown {
-			position: absolute;
-			margin: auto;
-			margin-left: 5.7%;
-			margin-top: 100px;
+		#keyup {}
+
+		#keydown {}
+
+		.button0 {
 			box-shadow: rgb(66, 66, 66) 5px 5px 5px;
 			width: 150px;
 			height: 40px;
@@ -67,9 +50,23 @@
 </head>
 
 <body>
-	<button id="keyup">Up</button>
-	<button id="reset">Give Up</button>
-	<button id="keydown">Down</button>
+	<table id="settingBox">
+		<tr>
+			<td><button id="keyup" class="button0">Up</button></td>
+			<td><button id="reset" class="button0">Give Up</button></td>
+			<td><button id="keydown" class="button0">Down</button></td>
+		</tr>
+		<tr>
+			<td><button id="obstacle" class="button0">Obstacle</button></td>
+			<td><button id="mute" class="button0">Mute</button></td>
+			<td><button id="speed" class="button0">Speed</button></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				<p style="color: white; font-size: 25px;">You can control by <b id="controlInfo">Mouse.</b></p>
+			</td>
+		</tr>
+	</table>
 	<canvas id="pong" width="600" height="400"></canvas>
 	<script type="module" src="/srcs/canvas.tsx"></script>
 </body>
